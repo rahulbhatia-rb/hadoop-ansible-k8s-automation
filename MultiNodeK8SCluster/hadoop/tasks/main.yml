@@ -1,0 +1,25 @@
+---
+# tasks file for launching hadoop
+- name: "Launching Hadoop"
+  kubernetes.core.helm:
+    name: hadoop
+    chart_ref: stable/hadoop
+    release_namespace: default
+
+- name: "get all"
+  shell: "kubectl get all"
+  register: all
+
+- debug:
+    var: "all.stdout_lines"
+
+- name: "Pausing playbook for 60 seconds"
+  pause: 
+    seconds: 60
+
+- name: "Displaying Hadoop Stateful sets"
+  shell: "kubectl get statefulset"
+  register: stateful
+
+- debug:
+    var: "stateful.stdout_lines"
